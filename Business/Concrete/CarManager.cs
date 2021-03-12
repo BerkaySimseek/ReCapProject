@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using Business.Abstract;
 using DataAccess.Abstract;
@@ -22,9 +24,26 @@ namespace Business.Concrete
             return _carDal.GetAll();
         }
 
+        public List<Car> GetCarsByBrandId(int brandId)
+        {
+            return _carDal.GetAll(p => p.BrandId == brandId);
+        }
+
+        public List<Car> GetCarsByColorId(int colorId)
+        {
+            return _carDal.GetAll(p => p.ColorId == colorId);
+        }
+
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (car.Description.Length > 2 && car.DailyPrice > 0  )
+            {
+                _carDal.Add(car);
+            }
+            else
+            {
+                Console.WriteLine("Hatalı giriş yaptınız!");
+            }
         }
 
         public void Update(Car car)
@@ -35,11 +54,6 @@ namespace Business.Concrete
         public void Delete(Car car)
         {
             _carDal.Delete(car);
-        }
-
-        public Car GetById(int id)
-        {
-            return _carDal.GetById(id);
         }
     }
 }
